@@ -1,4 +1,4 @@
-﻿# RFID Tag Converter
+# RFID Tag Converter
 
 RFID Tag Converter is a simple utility to convert RFID tags to different formats. Access control systems store RFID tags in various formats, and this tool is designed to help convert those formats as needed. It is particularly useful for USB readers that simulate keyboard input.
 
