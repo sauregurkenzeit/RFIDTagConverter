@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RFIDTagConverter.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="InputFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Smartec usb HID</Value>
+    </Setting>
+    <Setting Name="OutputFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Orion Pro with CRC</Value>
+    </Setting>
+    <Setting Name="VisibleFormats" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TID decimal,Card number with facility decimal</Value>
+    </Setting>
+    <Setting Name="FacilityCode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">016</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
