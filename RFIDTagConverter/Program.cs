@@ -142,13 +142,59 @@ namespace RFIDTagConverter
 
         public override string ToHex(TextBox input)
         {
-            string facility = int.Parse((string)Properties.Settings.Default["FacilityCode"]).ToString("X");
-            string tid = (int.Parse(input.Text) - 150).ToString("X");
-            facility = facility.PadLeft(2, '0');
-            tid = tid.PadLeft(6, '0');
-            return facility + tid.Substring(2);
+            int facility = int.Parse((string)Properties.Settings.Default["FacilityCode"]);
+            int k = FacilityMap.GetOffset(facility);
+            int cardNumber = (int.Parse(input.Text) - k) & 0xFFFF;
+            long tid = facility * 65536L + cardNumber;
+            return tid.ToString("X");
         }
         public override string FromHex(string hex) => new String('?', 8);
+    }
+
+    public static class FacilityMap
+    {
+        // facility code -> K_facility
+        public static Dictionary<int, int> Map { get; private set; } = new Dictionary<int, int>();
+
+        public static void Load()
+        {
+            // load from settings (comma-separated facility=K pairs)
+            string raw = Properties.Settings.Default["FacilityMap"] as string ?? "";
+            Map.Clear();
+            foreach (var entry in raw.Split(';'))
+            {
+                if (string.IsNullOrWhiteSpace(entry)) continue;
+                var parts = entry.Split('=');
+                if (parts.Length == 2 &&
+                    int.TryParse(parts[0], out int facility) &&
+                    int.TryParse(parts[1], out int k))
+                {
+                    Map[facility] = k;
+                }
+            }
+        }
+
+        public static void Save()
+        {
+            var raw = string.Join(";", Map.Select(kv => $"{kv.Key}={kv.Value}"));
+            Properties.Settings.Default["FacilityMap"] = raw;
+            Properties.Settings.Default.Save();
+        }
+
+        public static int GetOffset(int facility)
+        {
+            if (Map.TryGetValue(facility, out int k))
+                return k;
+            return 0;
+        }
+
+        public static void AddNewFacility(int iValue, int facility, int card)
+        {
+            int k = (iValue - card) & 0xFFFF;  // compute offset
+            Map[facility] = k;
+            Save();
+        }
+
     }
 
     public static class FormatManager

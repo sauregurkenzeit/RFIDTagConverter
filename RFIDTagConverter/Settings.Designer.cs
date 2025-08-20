@@ -37,7 +37,7 @@ namespace RFIDTagConverter
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(27, 406);
+            this.buttonSave.Location = new System.Drawing.Point(27, 426);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 0;
@@ -68,7 +68,7 @@ namespace RFIDTagConverter
             this.AcceptButton = this.buttonSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(379, 443);
+            this.ClientSize = new System.Drawing.Size(379, 463);
             this.ControlBox = false;
             this.Controls.Add(this.groupBoxOutput);
             this.Controls.Add(this.groupBoxInput);

@@ -14,6 +14,11 @@ namespace RFIDTagConverter
             Text = (string)Properties.Settings.Default["FacilityCode"],
         };
 
+        private TextBox FacilityOffsetTextBox = new TextBox
+        {
+           Enabled = false,
+        };
+
         public SettingsForm()
         {
             InitializeComponent();
@@ -65,6 +70,19 @@ namespace RFIDTagConverter
             FacilityTextBox.Location = new Point(110, yPos);
             Controls.Add(FacilityCodeLabel);
             Controls.Add(FacilityTextBox);
+
+            yPos += 25;
+
+            var FacilityOffsetLabel = new Label
+            {
+                Text = "Facility offset",
+                Location = new Point(10, yPos)
+            };
+            var FacilityCode = int.Parse(Properties.Settings.Default["FacilityCode"] as string);
+            FacilityOffsetTextBox.Text = FacilityMap.GetOffset(FacilityCode).ToString("D3");
+            FacilityOffsetTextBox.Location = new Point(110, yPos);
+            Controls.Add(FacilityOffsetLabel);
+            Controls.Add(FacilityOffsetTextBox);
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
@@ -72,6 +90,24 @@ namespace RFIDTagConverter
             var formats = FormatManager.AvailableFormats.Values.ToList();
             var selectedInput = formats.FirstOrDefault(f => f.IsInput)?.Name;
             var selectedOutput = formats.FirstOrDefault(f => f.IsOutput)?.Name;
+            var facility = int.Parse(FacilityTextBox.Text);
+
+            if (!FacilityMap.Map.ContainsKey(facility))
+            {
+                using (var dlg = new NewFacilityForm(facility))
+                {
+                    dlg.TopMost = true;
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                    {
+                        FacilityMap.AddNewFacility(dlg.IValue, dlg.Facility, dlg.Card);
+                        MessageBox.Show($"New facility {dlg.Facility} added with offset {FacilityMap.GetOffset(facility):D3}");
+                    }
+                    else
+                    {
+                        return; // user canceled
+                    }
+                }
+            }
 
             if (string.IsNullOrEmpty(selectedInput) || string.IsNullOrEmpty(selectedOutput))
             {

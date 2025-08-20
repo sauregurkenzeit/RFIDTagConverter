@@ -14,5 +14,8 @@
     <Setting Name="FacilityCode" Type="System.String" Scope="User">
       <Value Profile="(Default)">016</Value>
     </Setting>
+    <Setting Name="FacilityMap" Type="System.String" Scope="User">
+      <Value Profile="(Default)">016=150</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
